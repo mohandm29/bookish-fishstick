@@ -1,0 +1,18 @@
+# FIXTURE: R19 — clean implementation
+# This file demonstrates the CORRECT pattern for rule R19.
+# A code review against this file should produce 0 CRITICAL/HIGH findings for R19.
+
+# CORRECT: OSIV disabled. The web layer cannot trigger silent lazy loads on
+# detached entities — all fetches must be performed inside the service-layer
+# transaction, surfacing N+1 problems at development time instead of hiding them.
+spring:
+  jpa:
+    open-in-view: false
+
+# Companion service-layer pattern:
+#
+# @Transactional(readOnly = true)
+# public PostView load(Long id) {
+#     Post post = repo.findByIdWithComments(id);  // fetch what the view needs
+#     return PostView.from(post);                 // return a detached DTO
+# }

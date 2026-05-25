@@ -1,0 +1,20 @@
+# FIXTURE: R20 — hibernate.enable_lazy_load_no_trans = true
+# Expected severity: HIGH
+# Expected finding: hibernate.enable_lazy_load_no_trans=true opens a new transaction per lazy access, catastrophic under load
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/app
+    username: app
+    password: secret
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        enable_lazy_load_no_trans: true
+        jdbc:
+          batch_size: 25
+        order_inserts: true
+        order_updates: true
